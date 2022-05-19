@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 비디오 파트
 import VideoView from '@/views/VideoView.vue'
-import VideoMain from '@/components/video/VideoMain.vue'
 import VideoDetail from '@/components/video/VideoDetail.vue'
 import VideoPart from '@/components/video/VideoPart.vue'
 import VideoSearch from '@/components/video/VideoSearch.vue'
@@ -24,11 +23,6 @@ const routes = [
     path: '/',
     component: VideoView,
     children: [
-      {
-        path: '',
-        name: 'home',
-        component: VideoMain,
-      },
       {
         path: 'detail',
         name: 'VideoDetail',

@@ -1,6 +1,6 @@
 <template>
   <div>
-      
+      <h2>비디오 메인</h2>
   </div>
 </template>
 

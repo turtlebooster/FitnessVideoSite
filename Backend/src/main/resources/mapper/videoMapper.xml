@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafit.model.dao.VideoDao">
+	<select id="selectVideoList" resultType="video">
+		select video.id, title, name as part, channel_name as channelName, url, view_cnt as viewCnt
+		from video, part
+		where video.part_id = part.id
+	</select>
+	<select id="selectVideoById" resultType="video" parameterType="string">
+		select video.id, title, name as part, channel_name as channelName, url, view_cnt as viewCnt
+		from video, part
+		where video.part_id = part.id
+		and video.id = #{videoId}
+	</select>
+	<select id="selectVideoLikeList" resultType="video" parameterType="string">
+		select video.id, title, name as part, channel_name as channelName, url, view_cnt as viewCnt
+		from video, part
+		where video.part_id = part.id
+		 and video.id in (select video_id
+		 				   from like_video
+		 				  where like_video.user_id = #{userId})
+	</select>
+	<update id="updateViewCnt" parameterType="video">
+		update video
+		set view_cnt = #{viewCnt}
+		where id = #{id}
+	</update>
+</mapper>

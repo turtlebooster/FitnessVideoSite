@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafit.model.dao.TodoListDao">
+	<select id="selectTodoListList" resultType="todoList" parameterType="int">
+		select *
+		from todo_list
+		where id = #{id}
+	</select>	
+	<select id="selectTodoListOne" resultType="todoList" parameterType="int">
+		select *
+		from todo_list
+		where no = #{no}
+	</select>
+	<insert id="insertTodoList" parameterType="todoList">
+		insert into todo_list
+		values(0, #{id}, #{todo}, #{check})
+	</insert>
+	<update id="updateTodoList" parameterType="todoList">
+		update todo_list
+		set todo = #{todo},
+			`check` = #{check}
+		where no = #{no}
+	</update>
+	<delete id="deleteTodoList" parameterType="todoList">
+		delete from todo_list
+		 where no = #{no}
+	</delete>
+</mapper>

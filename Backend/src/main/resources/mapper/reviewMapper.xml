@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafit.model.dao.ReviewDao">
+	<resultMap type="review" id="reviewMap">
+		<id column="no" property="no" />
+		<result column="content" property="content" />
+		<result column="user_id" property="userId" />
+		<result column="reg_time" property="regTime" />
+		<result column="video_id" property="videoId" />
+		<result column="like_cnt" property="likeCnt" />
+		<result column="dislike_cnt" property="dislikeCnt" />
+	</resultMap>
+	<select id="selectReviewListByVideoId" resultMap="reviewMap">
+		select *
+		  from review
+		 where video_id = #{videoId}
+		<if test="param == 0">
+		 order by like_cnt desc
+		</if>
+		<if test="param == 1">
+		 order by reg_time desc
+		</if>
+		<if test="param == 2">
+		 order by reg_time
+		</if>
+	</select>
+	<select id="selectReviewListByUserId" resultMap="reviewMap" parameterType="string">
+		select *
+		  from review
+		 where user_id = #{userId}
+	</select>
+	<select id="selectReviewOne" resultMap="reviewMap" parameterType="int">
+		select *
+		  from review
+		 where no = #{no}
+	</select>	
+	<insert id="insertReview" parameterType="review">
+		insert into review (content, user_id, reg_time, video_id)
+		values(#{content}, #{userId}, now(), #{videoId})
+	</insert>
+	<update id="updateReview" parameterType="review">
+		update review
+		set content = #{content},
+			like_cnt = #{likeCnt},
+			dislike_cnt = #{dislikeCnt}
+			where no = #{no}
+	</update>
+	<delete id="deleteReview" parameterType="int">
+		delete from review
+		where no = #{no}
+	</delete>
+</mapper>

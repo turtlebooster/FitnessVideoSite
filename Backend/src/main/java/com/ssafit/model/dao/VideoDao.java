@@ -13,4 +13,8 @@ public interface VideoDao {
 	void updateViewCnt(Video video);
 	// 유저가 좋아한 비디오 목록 가져오는 기능
 	List<Video> selectVideoLikeList(String userId);
+	// 부위 별 목록 가져오기
+	List<Video> selectVideoListByPart(String part);
+	// 키워드 검색 으로 비디오 목록 가져오기
+	List<Video> selectVideoListBySearch(String keyword);
 }

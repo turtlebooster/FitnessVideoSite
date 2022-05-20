@@ -14,8 +14,12 @@ public class VideoServiceImpl implements VideoService {
 	private VideoDao videoDao;
 	
 	@Override
-	public List<Video> getVideoList() {		
-		return videoDao.selectVideoList();
+	public List<Video> getVideoList(String part) {
+		if (part == null || part.length() == 0) {
+			return videoDao.selectVideoList();			
+		} else {
+			return videoDao.selectVideoListByPart(part);
+		}
 	}
 
 	@Override
@@ -34,6 +38,11 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<Video> getVideoLikeList(String userId) {		
 		return videoDao.selectVideoLikeList(userId);
+	}
+
+	@Override
+	public List<Video> getVideoListBySearch(String keyword) {
+		return videoDao.selectVideoListBySearch(keyword);
 	}
 
 }

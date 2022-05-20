@@ -11,47 +11,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="video in user.likeVideos" :key="video.id">
           <td>
             <img
                 width="320"
                 height="180"
-                src="https://img.youtube.com/vi/gMaB-fG4u4g/mqdefault.jpg"
+                :src="`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`"
                 title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
             >
           </td>
-          <td><b-button variant="danger">Button</b-button></td>
-        </tr>
-        <tr>
-          <td>
-            <img
-                width="320"
-                height="180"
-                src="https://img.youtube.com/vi/swRNeYw1JkY/mqdefault.jpg"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-            >
-          </td>
-          <td><b-button>Button</b-button></td>
-        </tr>
-        <tr>
-          <td>
-            <img
-                width="320"
-                height="180"
-                src="https://img.youtube.com/vi/54tTYO-vU2E/mqdefault.jpg"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-            >
-          </td>
-          <td><b-button>Button</b-button></td>
+          <td><b-button variant="danger">삭제</b-button></td>
         </tr>
       </tbody>
     </table>
@@ -59,8 +31,14 @@
 </template>
 
 <script>
-export default {
-
+import { mapState } from "vuex";
+export default {  
+  computed: {
+    ...mapState(['user'])
+  },
+  created() {
+    this.$store.dispatch('getLikeVideo');   
+  },
 }
 </script>
 

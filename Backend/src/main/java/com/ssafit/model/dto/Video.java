@@ -7,6 +7,14 @@ public class Video {
 	private String channelName;
 	private String url;
 	private int viewCnt;
+	private String partId;
+	
+	public String getPartId() {
+		return partId;
+	}
+	public void setPartId(String partId) {
+		this.partId = partId;
+	}
 	public String getId() {
 		return id;
 	}

@@ -49,7 +49,9 @@ public class ApiUserController{
 			user = userService.login(id, password);
 			if(user.getId() != null || user.getId().length() > 0) {
 				result.put("auth-token", jwtUtil.createToken("userId", user.getId()));
-				
+				result.put("id", user.getId());
+				result.put("nickname", user.getNickname());
+				result.put("email", user.getEmail());
 				result.put("message", SUCCESS);				
 				status = HttpStatus.ACCEPTED;
 			}

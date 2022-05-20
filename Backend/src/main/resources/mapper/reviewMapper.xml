@@ -12,9 +12,10 @@
 		<result column="dislike_cnt" property="dislikeCnt" />
 	</resultMap>
 	<select id="selectReviewListByVideoId" resultMap="reviewMap">
-		select *
-		  from review
-		 where video_id = #{videoId}
+		select review.*, user.nickname
+		  from review, user
+		 where review.user_id = user.id
+		   and video_id = #{videoId}
 		<if test="param == 0">
 		 order by like_cnt desc
 		</if>

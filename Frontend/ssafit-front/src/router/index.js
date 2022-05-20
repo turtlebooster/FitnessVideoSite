@@ -24,12 +24,12 @@ const routes = [
     component: VideoView,
     children: [
       {
-        path: 'detail',
+        path: 'detail/:videoId',
         name: 'VideoDetail',
         component: VideoDetail,
       },
       {
-        path: 'part',
+        path: '',
         name: 'VideoPart',
         component: VideoPart,
       },

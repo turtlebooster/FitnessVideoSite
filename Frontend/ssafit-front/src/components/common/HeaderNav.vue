@@ -2,20 +2,30 @@
   <header>
     <nav class="header-nav">
       <div>
-        <router-link :to="{ name: 'home' }">SSAFIT</router-link>
+        <router-link to="/">SSAFIT</router-link>
       </div>
       <div>
-        <router-link to="#1">로그인 </router-link>
-        <router-link to="#2">회원가입 </router-link>
-        <router-link to="#3">마이페이지 </router-link>
+        <router-link v-if="!isLogin" :to="{name : 'UserLogin'}">로그인 </router-link>
+        <a href="/" v-else @click="doLogout">로그아웃 </a>
+        <router-link v-if="!isLogin" :to="{name : 'UserRegist'}">회원가입 </router-link>
+        <router-link v-else :to="{name : 'UserInfo'}">마이페이지 </router-link>
       </div>
     </nav>
   </header>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 export default {
-
+  computed: {
+    ...mapState(["isLogin"])
+  },
+  methods: {
+    ...mapMutations(["USER_LOGOUT"]),
+    doLogout(){
+      this.USER_LOGOUT();
+    }
+  },
 }
 </script>
 

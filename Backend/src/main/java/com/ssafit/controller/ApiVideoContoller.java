@@ -27,8 +27,12 @@ public class ApiVideoContoller {
 	private VideoService videoService;
 	
 	@GetMapping("list")
-	public ResponseEntity<List<Video>> list(){
-		return new ResponseEntity<List<Video>>(videoService.getVideoList(), HttpStatus.OK);
+	public ResponseEntity<List<Video>> list(String part){
+		return new ResponseEntity<List<Video>>(videoService.getVideoList(part), HttpStatus.OK);
+	}
+	@GetMapping("search")
+	public ResponseEntity<List<Video>> searchList(String keyword){
+		return new ResponseEntity<List<Video>>(videoService.getVideoListBySearch(keyword), HttpStatus.OK);
 	}
 	@GetMapping("detail/{videoId}")
 	public ResponseEntity<Video> detail(@PathVariable String videoId){

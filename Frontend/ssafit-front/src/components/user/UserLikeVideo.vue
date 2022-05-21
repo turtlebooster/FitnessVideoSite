@@ -23,7 +23,7 @@
                 allowfullscreen
             >
           </td>
-          <td><b-button variant="danger">삭제</b-button></td>
+          <td><b-button @click="deleteLikeVideo(video.id)" variant="danger">삭제</b-button></td>
         </tr>
       </tbody>
     </table>
@@ -33,6 +33,16 @@
 <script>
 import { mapState } from "vuex";
 export default {  
+  methods: {
+    deleteLikeVideo(videoId){
+      let data = {
+        userId : this.user.id,
+        videoId
+      }
+      this.$store.dispatch("deleteLikeVideo", data)   
+      this.$store.dispatch('getLikeVideo')        
+    },
+  },
   computed: {
     ...mapState(['user'])
   },

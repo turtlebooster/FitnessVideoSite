@@ -12,20 +12,28 @@
       <tbody>
         <tr v-for="review in user.reviews" :key="review.no">
           <td>
-            <img
-                  width="160"
-                  height="90"
-                  :src="`https://img.youtube.com/vi/${review.videoId}/mqdefault.jpg`"
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-              >
+            <router-link :to="`/detail/${review.videoId}`">
+              <img
+                    width="160"
+                    height="90"
+                    :src="`https://img.youtube.com/vi/${review.videoId}/mqdefault.jpg`"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                >
+            </router-link>
+          </td>
+          <td>            
+            <router-link :to="`/detail/${review.videoId}`">
+              {{ review.videoTitle }}              
+            </router-link>  
           </td>
           <td>
-            전신 다이어트 최고의 운동 [칼소폭 찐 핵핵매운맛]
+            <router-link :to="`/detail/${review.videoId}`">
+              {{ review.content }}
+            </router-link>   
           </td>
-          <td>{{ review.content }}</td>
         </tr>        
       </tbody>
     </table>

@@ -51,8 +51,7 @@ export default new Vuex.Store({
       state.user.reviews = reviews      
     },
     GET_PART_VIDEO(state, partVideos) {      
-      state.videos = partVideos
-      console.log("들어왔다")
+      state.videos = partVideos      
     },
     GET_SEARCH_VIDEO(state, searchVideos) {      
       state.videos = searchVideos
@@ -157,6 +156,55 @@ export default new Vuex.Store({
         // console.log(data)
         commit('GET_REVIEW_BY_VIDEO_ID', data)
       })
+    },
+    insertReview({ dispatch }, review) {            
+      api({
+        url: `/review/write`,
+        method: 'POST',
+        params: review,
+      })
+      .then(()=>{
+        // console.log(data)
+        dispatch('getReviewByVideoId', review.videoId)
+      })
+    },
+    updateReview({ dispatch }, review) {
+      api({
+        url: `/review/update`,
+        method: 'PUT',
+        data: JSON.stringify(review)
+      })
+      .then(()=>{
+        // console.log(data)
+        dispatch('getReviewByVideoId', review.videoId)
+      })
+    },
+    deleteReview({ dispatch }, review) {
+      api({
+        url: `/review/delete/${review.no}`,
+        method: 'DELETE',        
+      })
+      .then(()=>{
+        // console.log(data)
+        dispatch('getReviewByVideoId', review.videoId)
+      })
+    },
+    insertLikeVideo({ commit }, data) {
+      commit
+      api({
+        url: `/user/write/`,
+        method: 'POST', 
+        params: data
+      })
+    },
+    deleteLikeVideo({ dispatch }, data) {      
+      api({
+        url: `/user/deletelikevideo/${data.userId}/${data.videoId}`,
+        method: 'DELETE', 
+        params: data
+      })
+      dispatch("getPartVideo")     
+      dispatch('getLikeVideo')      
     }
   },  
   modules: {

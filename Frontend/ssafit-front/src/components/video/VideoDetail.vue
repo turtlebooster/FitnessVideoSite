@@ -9,6 +9,11 @@
         </div>
         <!-- 댓글  -->
         <div>
+          <!-- 댓글 작성 창 -->
+          <div>
+            댓글: <input type="text" v-model="content" @keyup.enter="insertReview" placeholder="댓글 추가...">
+            <button @click="insertReview">댓글</button>
+          </div>
           <table>
             <thead>
               <tr>
@@ -23,11 +28,21 @@
             <tbody>
               <tr v-for="review in reviews" :key="review.no">
                 <td>{{review.nickname}}</td>
-                <td>{{review.content}}</td>
+                <td v-if="writeNo == review.no"><input type="text" v-model="updateContent"></td>
+                <td v-else>{{review.content}}</td>
                 <td>{{review.regTime}}</td>
-                <td>{{review.likeCnt}}</td>
-                <td>{{review.dislikeCnt}}</td>
-                <td><button>수정</button><button>삭제</button></td>              
+                <td><button @click="upLike(review)">좋아요</button>{{review.likeCnt}}</td>
+                <td><button @click="upDislike(review)">싫어요</button>{{review.dislikeCnt}}</td>
+                <td v-if="user.id == review.userId">
+                  <div v-if="writeNo == review.no">
+                    <button @click="updateReview(review)">수정</button>
+                    <button  @click="cancleUpdate">취소</button>
+                  </div>
+                  <div v-else>
+                    <button @click="changeToUpdateForm(review.no, review.content)">수정</button>
+                    <button @click="deleteReview(review)">삭제</button>
+                  </div>
+                </td>              
               </tr>
             </tbody>
           </table>
@@ -67,8 +82,52 @@ import {mapState} from 'vuex'
 
 export default {
   name: "VideoDetail",
+  data() {
+    return {
+      content : "",   
+      updateContent : "",
+      writeNo : null,   
+    }
+  },
+  methods: {
+    insertReview() {      
+      const pathName = new URL(document.location).pathname.split("/");
+      const videoId = pathName[pathName.length-1]      
+      let review = {
+        content : this.content,
+        userId : this.user.id,
+        videoId
+      }
+      console.log(review.userId)
+      this.$store.dispatch('insertReview', review);  
+    },
+    upLike(review) {
+      review.likeCnt++
+      this.$store.dispatch('updateReview', review);
+    },
+    upDislike(review) {
+      review.dislikeCnt++
+      this.$store.dispatch('updateReview', review);
+    },
+    deleteReview(review) {
+      this.$store.dispatch('deleteReview', review)
+    },
+    changeToUpdateForm(no, content) {
+      this.writeNo = no
+      this.updateContent = content
+    },
+    cancleUpdate() {
+      this.writeNo = null
+      this.updateContent = ""
+    },
+    updateReview(review) {
+      review.content = this.updateContent
+      this.cancleUpdate()
+      this.$store.dispatch('updateReview', review)
+    }
+  },
   computed: {
-    ...mapState(['video', 'reviews', 'videos'])
+    ...mapState(['video', 'reviews', 'videos', 'user'])
   },
   created(){
     const pathName = new URL(document.location).pathname.split("/");

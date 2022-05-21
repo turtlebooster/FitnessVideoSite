@@ -7,10 +7,17 @@ public class Review {
 	private String regTime;
 	private String videoId;	
 	private int likeCnt;
-	private int dislikeCnt;
+	private int dislikeCnt;	
 	
 	private String nickname;
+	private String videoTitle;
 	
+	public String getVideoTitle() {
+		return videoTitle;
+	}
+	public void setVideoTitle(String videoTitle) {
+		this.videoTitle = videoTitle;
+	}
 	public String getNickname() {
 		return nickname;
 	}

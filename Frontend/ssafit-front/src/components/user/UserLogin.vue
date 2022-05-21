@@ -21,8 +21,6 @@ export default {
     },
     methods:{
         login(){
-            console.log(this.user.id)
-            console.log(this.user.password)
             this.$store.dispatch('userLogin', {                
                 user: this.user, 
                 call: this.$route.query.call,

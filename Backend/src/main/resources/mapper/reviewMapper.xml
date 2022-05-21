@@ -27,9 +27,10 @@
 		</if>
 	</select>
 	<select id="selectReviewListByUserId" resultMap="reviewMap" parameterType="string">
-		select *
-		  from review
+		select review.*, video.title videoTitle
+		  from review, video
 		 where user_id = #{userId}
+		   and review.video_id = video.id
 	</select>
 	<select id="selectReviewOne" resultMap="reviewMap" parameterType="int">
 		select *

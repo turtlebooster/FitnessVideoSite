@@ -1,11 +1,22 @@
 <template>
   <div class = "">
-      <h2>비디오 디테일</h2>  
+      <!-- 비디오 디테일  -->
       <!-- flex 잡을때 참고 왼쪽 -->
       <div>
         <!-- 선택한 비디오 영상 -->
         <div style="position:relative; padding-bottom:56.25%; padding-top:30px; height:0; overflow:hidden;">
           <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" width="100%" height="315" :src="`https://www.youtube.com/embed/${video.id }`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div>
+          <!-- 제목 -->
+          <h1>{{video.title}}</h1>
+          <!-- 조회수 -->
+          <span>{{video.viewCnt}}회</span>
+          <!-- 찜 버튼 -->
+          <span>
+            <button v-if="!isLikeVideo" @click="insertLikeVideo">찜</button>
+            <button v-else @click="deleteLikeVideo">찜 취소</button>
+          </span>
         </div>
         <!-- 댓글  -->
         <div>
@@ -27,7 +38,7 @@
             </thead>
             <tbody>
               <tr v-for="review in reviews" :key="review.no">
-                <td>{{review.nickname}}</td>
+                <router-link :to="{name : 'MemberLikeVideo', params: {memberId : review.userId}}"><td>{{review.nickname}}</td></router-link>
                 <td v-if="writeNo == review.no"><input type="text" v-model="updateContent"></td>
                 <td v-else>{{review.content}}</td>
                 <td>{{review.regTime}}</td>
@@ -98,8 +109,9 @@ export default {
         userId : this.user.id,
         videoId
       }
-      console.log(review.userId)
+      // console.log(review.userId)
       this.$store.dispatch('insertReview', review);  
+      this.content = ""
     },
     upLike(review) {
       review.likeCnt++
@@ -124,10 +136,33 @@ export default {
       review.content = this.updateContent
       this.cancleUpdate()
       this.$store.dispatch('updateReview', review)
-    }
+    },
+    insertLikeVideo() {
+      let data = {
+        userId : this.user.id,
+        videoId : this.video.id
+      }      
+      this.$store.dispatch("insertLikeVideo", data)
+    },
+    deleteLikeVideo(){
+      let data = {
+        userId : this.user.id,
+        videoId : this.video.id
+      }
+      this.$store.dispatch("deleteLikeVideo", data)      
+    },
   },
   computed: {
-    ...mapState(['video', 'reviews', 'videos', 'user'])
+    ...mapState(['video', 'reviews', 'videos', 'user']),
+    isLikeVideo() {
+      const likeVideos = this.user.likeVideos
+      for (let i = 0; i < likeVideos.length; i++) {
+        if (likeVideos[i].id == this.video.id) {
+          return true
+        }
+      }
+      return false
+    }
   },
   created(){
     const pathName = new URL(document.location).pathname.split("/");

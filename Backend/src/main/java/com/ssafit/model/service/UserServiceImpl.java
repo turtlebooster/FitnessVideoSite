@@ -1,5 +1,7 @@
 package com.ssafit.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +63,34 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void removeLikeVideo(String userId, String videoId) {
 		userDao.deleteLikeVideo(userId, videoId);
+	}
+
+	@Override
+	public List<User> getFollowListById(String id) {		
+		return userDao.selectFollowListById(id);
+	}
+
+	@Override
+	public List<User> getFollowerListById(String id) {
+		return userDao.selectFollowerListById(id);
+	}
+
+	@Override
+	public void writeFollow(String userId, String followId) {
+		userDao.insertFollow(userId, followId);
+	}
+
+	@Override
+	public void removeFollow(String userId, String followId) {
+		userDao.deleteFollow(userId, followId);		
+	}
+
+	@Override
+	public User getUserById(String id) throws Exception {
+		User user = userDao.selectById(id);
+		if(user == null) { // id 가 목록에 없는 경우
+			throw new UserNotFoundException();
+		} else return user;
 	}
 
 }

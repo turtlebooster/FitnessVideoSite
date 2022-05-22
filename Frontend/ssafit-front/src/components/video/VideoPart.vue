@@ -29,8 +29,6 @@
               {{video.channelName}}
               {{video.part}}
               {{video.viewCnt}}
-              <button v-if="!isLike(video.id)" @click="insertLikeVideo(video.id)">찜</button>
-              <button v-else @click="deleteLikeVideo(video.id)">찜 취소</button>
             </p>            
           </div>
         </div>  
@@ -49,33 +47,9 @@ name: "VideoPart",
   },
   methods:{
     getPartVideo(part){
-      console.log(part)
+      // console.log(part)
       this.$store.dispatch("getPartVideo", part)
     },
-    insertLikeVideo(videoId) {
-      let data = {
-        userId : this.user.id,
-        videoId
-      }
-      this.$store.dispatch("insertLikeVideo", data)
-      this.$store.dispatch("getPartVideo")
-    },
-    deleteLikeVideo(videoId){
-      let data = {
-        userId : this.user.id,
-        videoId
-      }
-      this.$store.dispatch("deleteLikeVideo", data)  
-      this.$store.dispatch("getPartVideo")         
-    },
-    isLike(videoId) {
-      for (let i = 0; i < this.user.likeVideos.length; i++) {
-        if (this.user.likeVideos[i].id == videoId ) {
-          return true
-        }
-      }
-      return false
-    }
   },
   computed:{
     ...mapState(['videos', 'user']),
@@ -83,7 +57,7 @@ name: "VideoPart",
   created() {
     this.$store.dispatch("getPartVideo")
     if(this.user.id){
-      this.$store.dispatch('getLikeVideo')
+      this.$store.dispatch('getLikeVideo', this.user)
     }
   }
 }

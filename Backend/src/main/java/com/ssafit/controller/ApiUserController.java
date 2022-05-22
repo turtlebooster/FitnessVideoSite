@@ -1,6 +1,7 @@
 package com.ssafit.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class ApiUserController{
 	
 	@PutMapping("/update")
 	public ResponseEntity<String> update(@RequestBody User user){
-		System.out.println(user.getId());
+//		System.out.println(user.getId());
 		try {
 			userService.modifyUser(user);
 		} catch (Exception e) {
@@ -91,5 +92,36 @@ public class ApiUserController{
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);		
 	}
 	
+	@GetMapping("/follow/{userId}")
+	public ResponseEntity<List<User>> getFollowList(@PathVariable String userId) {
+		return new ResponseEntity<List<User>>(userService.getFollowListById(userId), HttpStatus.OK);	
+	}
 	
+	@GetMapping("/follower/{userId}")
+	public ResponseEntity<List<User>> getFollowerList(@PathVariable String userId) {
+		return new ResponseEntity<List<User>>(userService.getFollowerListById(userId), HttpStatus.OK);	
+	}
+	
+	@PostMapping("/writefollow")
+	public ResponseEntity<String> writeFollow(String userId, String followId){
+		userService.writeFollow(userId, followId);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/deletefollow/{userId}/{followId}")
+	public ResponseEntity<String> deleteFollow(@PathVariable String userId, @PathVariable String followId){
+		userService.removeFollow(userId, followId);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);		
+	}
+	
+	@GetMapping("/getmember/{userId}")
+	public ResponseEntity<User> getMember(@PathVariable String userId){
+		User user = null;
+		try {
+			user = userService.getUserById(userId);
+		} catch (Exception e) {
+			return new ResponseEntity<User>(user, HttpStatus.NO_CONTENT);			
+		}
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
 }

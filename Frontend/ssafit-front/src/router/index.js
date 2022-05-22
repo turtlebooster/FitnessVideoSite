@@ -14,7 +14,11 @@ import UserLikeVideo from '@/components/user/UserLikeVideo.vue'
 import UserLogin from '@/components/user/UserLogin.vue'
 import UserRegist from '@/components/user/UserRegist.vue'
 import UserReview from '@/components/user/UserReview.vue'
-
+// 멤버 파트
+import MemberView from '@/views/MemberView.vue'
+import MemberFollowList from '@/components/member/MemberFollowList.vue'
+import MemberLikeVideo from '@/components/member/MemberLikeVideo.vue'
+import MemberReview from '@/components/member/MemberReview.vue'
 
 Vue.use(VueRouter)
 
@@ -79,6 +83,28 @@ const routes = [
         path: 'review',
         name: 'UserReview',
         component: UserReview,
+      },
+    ]
+  },
+  {
+    path: '/member',
+    name: 'MemberView',
+    component: MemberView,
+    children: [
+      {
+        path: 'follow-list',
+        name: 'MemberFollowList',
+        component: MemberFollowList,
+      },
+      {
+        path: 'like-video',
+        name: 'MemberLikeVideo',
+        component: MemberLikeVideo,
+      },
+      {
+        path: 'review',
+        name: 'MemberReview',
+        component: MemberReview,
       },
     ]
   },

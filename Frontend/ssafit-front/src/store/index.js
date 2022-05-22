@@ -17,6 +17,17 @@ export default new Vuex.Store({
       email: "",
       likeVideos: [],
       reviews: [],
+      followList: [],
+      followerList: [],
+    },
+    member: {
+      id: "",
+      nickname: "",
+      email: "",
+      likeVideos: [],
+      reviews: [],
+      followList: [],
+      followerList: [],
     },
     video : null,
     videos : [],
@@ -24,7 +35,7 @@ export default new Vuex.Store({
     keyword: "",
     isLogin: false,
   },
-  getters: {
+  getters: { 
   },
   mutations: {
     USER_LOGIN(state, data) {
@@ -61,7 +72,30 @@ export default new Vuex.Store({
     },
     GET_REVIEW_BY_VIDEO_ID(state, reviews) {
       state.reviews = reviews
-    }
+    },
+    GET_FOLLOW_LIST(state, followList) {
+      state.user.followList = followList
+    },
+    GET_FOLLOWER_LIST(state, followerList) {
+      state.user.followerList = followerList
+    },
+    GET_MEMBER(state, member){
+      state.member.id = member.id
+      state.member.nickname = member.nickname
+      state.member.email = member.email
+    },
+    GET_MEMBER_LIKE_VIDEO(state, likeVideos) {
+      state.member.likeVideos = likeVideos
+    },
+    GET_MEMBER_REVIEW(state, reviews) {
+      state.member.reviews = reviews
+    },
+    GET_MEMBER_FOLLOW_LIST(state, followList) {
+      state.member.followList = followList
+    },
+    GET_MEMBER_FOLLOWER_LIST(state, followerList) {
+      state.member.followerList = followerList
+    },
   },
   actions: {
     userLogin({ commit }, {user, call}) {
@@ -78,9 +112,19 @@ export default new Vuex.Store({
         }
       })
     },
-    getLikeVideo({ commit }) {      
+    userRegist({ commit }, user) {
+      commit
       api({
-        url: `/video/like/${this.state.user.id}`,
+        url: `/user/join`,
+        method: 'POST',
+        params: user
+      }).then(() => {
+        router.push('/')
+      })
+    },
+    getLikeVideo({ commit }, user) {      
+      api({
+        url: `/video/like/${user.id}`,
         method: 'GET',
       })
       .then(({data})=>{
@@ -189,12 +233,14 @@ export default new Vuex.Store({
         dispatch('getReviewByVideoId', review.videoId)
       })
     },
-    insertLikeVideo({ commit }, data) {
-      commit
+    insertLikeVideo({ dispatch }, data) {      
       api({
         url: `/user/write/`,
         method: 'POST', 
         params: data
+      })
+      .then(()=>{
+        dispatch('getLikeVideo', this.state.user)
       })
     },
     deleteLikeVideo({ dispatch }, data) {      
@@ -203,9 +249,114 @@ export default new Vuex.Store({
         method: 'DELETE', 
         params: data
       })
-      dispatch("getPartVideo")     
-      dispatch('getLikeVideo')      
-    }
+      .then(()=>{
+        dispatch('getLikeVideo', this.state.user)
+      })     
+    },
+    getFollowList({ commit }) {
+      api({
+        url: `/user/follow/${this.state.user.id}`,
+        method: 'GET',
+      })
+      .then(({data})=>{
+        // console.log(data)
+        commit('GET_FOLLOW_LIST', data)
+      })
+    },
+    getFollowerList({ commit }) {
+      api({
+        url: `/user/follower/${this.state.user.id}`,
+        method: 'GET',
+      })
+      .then(({data})=>{
+        // console.log(data)
+        commit('GET_FOLLOWER_LIST', data)
+      })
+    },
+    insertFollow({ dispatch }, followId) {      
+      let params = {
+        userId: this.state.user.id,
+        followId
+      }
+      api({
+        url: `/user/writefollow`,
+        method: 'POST',
+        params,
+      })
+      .then(()=>{
+        // console.log(data)
+        dispatch('getFollowList')
+      })
+    },
+    deleteFollow({ dispatch }, followId) {
+      api({
+        url: `/user/deletefollow/${this.state.user.id}/${followId}`,
+        method: 'DELETE',
+      })
+      .then(()=>{
+        // console.log(data)
+        dispatch('getFollowList')
+      })
+    },
+    getMember({ commit }, memberId) {
+      api({
+        url: `/user/getmember/${memberId}`,
+        method: 'GET',
+      })
+      .then(({data})=>{
+        // console.log(data)
+        commit('GET_MEMBER', data)
+      })
+      .catch(()=>{
+        console.log("오류")
+      })
+    },
+    getMemberLikeVideo({ commit }, memberId) {      
+      api({
+        url: `/video/like/${memberId}`,
+        method: 'GET',
+      })
+      .then(({data})=>{
+        // console.log(data)
+        commit('GET_MEMBER_LIKE_VIDEO', data)
+      })
+      .catch(()=>{
+        console.log("오류")
+      })
+    },
+    getMemberReview({ commit }, memberId){
+      api({
+        url: `review/listByUserId/${memberId}`,
+        method: 'GET',
+      })
+      .then(({data})=>{
+        // console.log(data)
+        commit('GET_MEMBER_REVIEW', data)
+      })
+      .catch(()=>{
+        console.log("오류")
+      })
+    },
+    getMemberFollowList({ commit }, memberId) {
+      api({
+        url: `/user/follow/${memberId}`,
+        method: 'GET',
+      })
+      .then(({data})=>{
+        // console.log(data)
+        commit('GET_MEMBER_FOLLOW_LIST', data)
+      })
+    },
+    getMemberFollowerList({ commit }, memberId) {
+      api({
+        url: `/user/follower/${memberId}`,
+        method: 'GET',
+      })
+      .then(({data})=>{
+        // console.log(data)
+        commit('GET_MEMBER_FOLLOWER_LIST', data)
+      })
+    },
   },  
   modules: {
   }

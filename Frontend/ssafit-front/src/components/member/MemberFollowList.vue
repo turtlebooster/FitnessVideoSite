@@ -3,45 +3,37 @@
     <h2>유저 followList</h2>
     <div>
       <h2>팔로우 목록</h2>
-      <table v-if="user.followList.length">
-        <thead>
-          <tr>
-            <th>닉네임</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(follow, index) in user.followList" :key="index">
-            <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follow.id}}">
-              <td>{{ follow.nickname }}</td>    
-            </router-link> 
-            <td><button @click="deleteFollow(follow.id)">삭제</button></td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-else>
-        팔로우한 사용자가 없습니다.
-      </div>
-    </div>
-    <div>
-      <h2>팔로워 목록</h2>
-      <table v-if="user.followerList.length">
+      <table>
         <thead>
           <tr>
             <th>닉네임</th>            
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(follower, index) in user.followerList" :key="index">
-            <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follower.id}}">
-              <td>{{ follower.nickname }}</td>   
-            </router-link>              
+          <tr v-for="(follow, index) in member.followList" :key="index">
+            <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follow.id}}">
+              <td>{{ follow.nickname }}</td>    
+            </router-link>        
           </tr>
         </tbody>
       </table>
-      <div v-else>
-        당신을 팔로우한 사용자가 없습니다.
-      </div>
+    </div>
+    <div>
+      <h2>팔로워 목록</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>닉네임</th>            
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(follower, index) in member.followerList" :key="index">
+            <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follower.id}}">
+              <td>{{ follower.nickname }}</td>   
+            </router-link>         
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -51,16 +43,11 @@ import {mapState} from 'vuex'
 
 export default {
   computed: {
-    ...mapState(['user'])
-  },
-  methods: {
-    deleteFollow(followId) {
-      this.$store.dispatch('deleteFollow', followId)
-    },
+    ...mapState(['member'])
   },
   created() {
-    this.$store.dispatch('getFollowList')
-    this.$store.dispatch('getFollowerList')
+    this.$store.dispatch('getMemberFollowList', this.member.id)
+    this.$store.dispatch('getMemberFollowerList', this.member.id)
   }
 }
 </script>

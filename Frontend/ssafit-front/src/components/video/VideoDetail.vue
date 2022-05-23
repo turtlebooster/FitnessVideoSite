@@ -1,5 +1,5 @@
 <template>
-  <div class = "d-flex">
+  <div class = "d-flex ">
       <!-- 비디오 디테일  -->
       <!-- flex 잡을때 참고 왼쪽 -->
       <div>

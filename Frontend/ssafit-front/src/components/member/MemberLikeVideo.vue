@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>
+    <h2 class="fw-bold">
       찜 영상 목록
     </h2>
       <!--  -->

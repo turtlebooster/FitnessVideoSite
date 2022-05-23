@@ -1,9 +1,10 @@
 <template>
   <div>
-    <h2>
+    <h2 class="fw-bold">
       찜 영상 목록
     </h2>
-          <div v-for="video in user.likeVideos" :key="video.id" class="card" style="width: 18rem;">
+    <div class="d-flex flex-wrap justify-content-center">
+      <div v-for="video in user.likeVideos" :key="video.id" class="card" style="width: 18rem;">
         <router-link :to="`detail/${video.id}`" >
         <img width="320"
           height="180"
@@ -28,32 +29,7 @@
           </p>            
         </div>
       </div>
-    <!-- <table>
-      <thead>
-        <tr>
-          <th>영상</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="video in user.likeVideos" :key="video.id">
-          <router-link :to="`/detail/${video.id}`" >
-            <td>
-              <img
-                  width="320"
-                  height="180"
-                  :src="`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`"
-                  title="YouTube video player"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-              >
-            </td>
-            <td><b-button @click="deleteLikeVideo(video.id)" variant="danger">삭제</b-button></td>
-          </router-link>
-        </tr>
-      </tbody>
-    </table> -->
+    </div>
   </div>
 </template>
 
@@ -79,6 +55,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+h2 {
+  text-align: center;
+}
 </style>

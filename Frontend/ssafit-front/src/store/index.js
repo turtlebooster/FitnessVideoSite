@@ -286,6 +286,8 @@ export default new Vuex.Store({
       .then(()=>{
         // console.log(data)
         dispatch('getFollowList')
+        dispatch('getMemberFollowList', followId)
+        dispatch('getMemberFollowerList', followId)
       })
     },
     deleteFollow({ dispatch }, followId) {
@@ -296,6 +298,8 @@ export default new Vuex.Store({
       .then(()=>{
         // console.log(data)
         dispatch('getFollowList')
+        dispatch('getMemberFollowList', followId)
+        dispatch('getMemberFollowerList', followId)
       })
     },
     getMember({ commit }, memberId) {

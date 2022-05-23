@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>리뷰 목록</h2>
-    <table>
+    <h2 class="fw-bold">리뷰 목록</h2>
+    <table v-if="user.reviews.length">
       <thead>
         <tr>
           <th>영상 썸네일</th>
@@ -37,6 +37,9 @@
         </tr>        
       </tbody>
     </table>
+    <div v-else class="center">
+      작성한 리뷰가 없습니다.
+    </div>
   </div>
 </template>
 
@@ -53,5 +56,10 @@ export default {
 </script>
 
 <style>
-
+h2 {
+  text-align: center;
+}
+.center {
+  text-align: center;
+}
 </style>

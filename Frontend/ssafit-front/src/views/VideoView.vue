@@ -1,5 +1,6 @@
 <template>
   <div>
+   <br>
    <div class="search">   
     <div class="input-group mb-3 d-flex justify-content-center">
       <input type="text" class="form-control" v-model="keyword" @keyup.enter="search" placeholder="제목을 입력하세요" aria-label="검색어" aria-describedby="button-addon2">
@@ -24,16 +25,18 @@ export default {
   methods: {
     search() {
       this.$store.dispatch("getSearchVideo", this.keyword)
-      this.$router.push(`search?keyword=${this.keyword}`)
+      this.$router.push({name: 'VideoSearch', params: {keyword : this.keyword}})
     },
   }
 }
 </script>
 
-<style>
+<style scoped>
 .search {
   position: relative;
   width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 input {
@@ -44,8 +47,4 @@ input {
   padding: 10px 12px;
   font-size: 14px;
 }
-
-/* .container {
- text-align: center;
-} */
 </style>

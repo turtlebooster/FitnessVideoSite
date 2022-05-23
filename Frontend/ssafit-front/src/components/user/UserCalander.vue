@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>유저 캘린더</h2>
+    <h2 class="fw-bold">유저 캘린더</h2>
     
       <!-- inspired by http://colorhunt.co/c/8184 and 
     https://dribbble.com/shots/2407357-Calendar%60 -->

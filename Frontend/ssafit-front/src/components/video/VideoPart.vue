@@ -1,15 +1,15 @@
 <template>
   <div>
     <!-- 부위 버튼 -->
-    <div>
-      <button class="btn btn-outline-dark" @click = "getPartVideo()" id = "전체">전체</button>
-      <button class="btn btn-outline-dark" @click = "getPartVideo('0001')" id = "전신">전신</button>
-      <button class="btn btn-outline-dark" @click = "getPartVideo('0002')" id = "상체">상체</button>
-      <button class="btn btn-outline-dark" @click = "getPartVideo('0003')" id = "하체">하체</button>
-      <button class="btn btn-outline-dark" @click = "getPartVideo('0004')" id = "복부">복부</button>
+    <div id="part-buttons">
+      <button class="btn btn-outline-dark" @click = "getPartVideo()" >전체</button>
+      <button class="btn btn-outline-dark" @click = "getPartVideo('0001')" >전신</button>
+      <button class="btn btn-outline-dark" @click = "getPartVideo('0002')" >상체</button>
+      <button class="btn btn-outline-dark" @click = "getPartVideo('0003')" >하체</button>
+      <button class="btn btn-outline-dark" @click = "getPartVideo('0004')" >복부</button>
     </div>
     <!-- 비디오 목록 -->
-    <div class="d-flex flex-wrap card-box">  
+    <div class="d-flex flex-wrap justify-content-center">  
       <div v-for="video in videos" :key="video.id" class="card" style="width: 18rem;">
         <router-link :to="`detail/${video.id}`" >
         <img width="320"
@@ -34,7 +34,7 @@
           </p>            
         </div>
       </div>  
-  </div>
+    </div>
   </div>  
 </template>
 
@@ -65,7 +65,7 @@ name: "VideoPart",
 }
 </script>
 
-<style>
+<style scoped>
 .card {
   margin-right: 10px;
   margin-left: 10px;
@@ -73,6 +73,9 @@ name: "VideoPart",
   margin-bottom: 10px;  
 }
 .btn {
-  margin: 7px;
+  margin: 5px;
+}
+#part-buttons {
+  text-align: center;
 }
 </style>

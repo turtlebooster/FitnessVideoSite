@@ -1,9 +1,8 @@
 <template>
   <div>
-    <h2>유저 followList</h2>
     <div>
-      <h2>팔로우 목록</h2>
-      <table>
+      <h2 class="fw-bold">팔로우 목록</h2>
+      <table v-if="member.followList.length">
         <thead>
           <tr>
             <th>닉네임</th>            
@@ -17,10 +16,14 @@
           </tr>
         </tbody>
       </table>
+      <div v-else>
+        팔로우한 사용자가 없습니다.
+      </div>
     </div>
+    <br><br><br>
     <div>
-      <h2>팔로워 목록</h2>
-      <table>
+      <h2 class="fw-bold">팔로워 목록</h2>
+      <table v-if="member.followerList.length">
         <thead>
           <tr>
             <th>닉네임</th>            
@@ -34,6 +37,9 @@
           </tr>
         </tbody>
       </table>
+      <div v-else>
+        '{{member.nickname}}' 님을 팔로우한 사용자가 없습니다.
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +58,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+* {
+  text-align: center;
+}
 
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>

@@ -1,19 +1,22 @@
 <template>
-  <b-container>
+  <div id="container">
       <div>
-        <h2>{{member.nickname}} 님 페이지</h2>
-        <div v-if="!isMe">
-          <button v-if="!followed" @click="follow">팔로우</button>
-          <button v-else @click="unfollow">언팔로우</button>
-        </div>
+        <h2 class="fw-bold">'{{member.nickname}}' 님 페이지</h2>
+        <span v-if="!isMe" class="d-flex justify-content-end">
+          <button v-if="!followed" @click="follow" class="btn btn-outline-primary"><i class="bi bi-person-plus-fill"></i></button>
+          <button v-else @click="unfollow" class="btn btn-outline-danger"><i class="bi bi-person-x-fill"></i></button>
+        </span>
       </div>
-      <div class="justify-content-md-center">
-        <router-link :to="{name: 'MemberLikeVideo'}">찜 영상</router-link> |
-        <router-link :to="{name: 'MemberReview'}">내가 쓴 리뷰</router-link> |        
-        <router-link :to="{name: 'MemberFollowList'}">팔로우</router-link>
+       <!-- 메뉴 -->
+      <div class="d-flex justify-content-center py-3">
+        <ul class="nav nav-pills">
+          <li class="nav-item"><router-link :to="{name: 'MemberLikeVideo'}">찜 영상</router-link> |</li>
+          <li class="nav-item"><router-link :to="{name: 'MemberReview'}">'{{member.nickname}}' 님이 작성한 리뷰</router-link> |</li>
+          <li class="nav-item"><router-link :to="{name: 'MemberFollowList'}">팔로우</router-link></li>
+        </ul>
       </div>
       <router-view/>
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -45,6 +48,25 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+#container {
+  margin-left: 25%;
+  margin-right: 25%;
+}
 
+a {
+  text-decoration: none;
+  color: rgb(106, 106, 106);
+  font-weight: bold;
+  margin: 5px;
+}
+
+a:hover {
+  color: rgb(3, 60, 231);  
+  font-weight: bolder;
+}
+
+i {
+  font-size: 20px;
+}
 </style>

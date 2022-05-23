@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2>유저 followList</h2>
+    <br><br>
     <div>
-      <h2>팔로우 목록</h2>
+      <h2 class="fw-bold">팔로우 목록</h2>
       <table v-if="user.followList.length">
         <thead>
           <tr>
@@ -15,7 +15,7 @@
             <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follow.id}}">
               <td>{{ follow.nickname }}</td>    
             </router-link> 
-            <td><button @click="deleteFollow(follow.id)">삭제</button></td>
+            <td><button @click="deleteFollow(follow.id)" class="btn btn-danger">삭제</button></td>
           </tr>
         </tbody>
       </table>
@@ -23,8 +23,9 @@
         팔로우한 사용자가 없습니다.
       </div>
     </div>
+    <br><br><br>
     <div>
-      <h2>팔로워 목록</h2>
+      <h2 class="fw-bold">팔로워 목록</h2>
       <table v-if="user.followerList.length">
         <thead>
           <tr>
@@ -65,6 +66,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+* {
+  text-align: center;
+}
 
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>

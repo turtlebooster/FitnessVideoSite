@@ -1,29 +1,34 @@
 <template>
-  <div class = "">
+  <div class = "d-flex">
       <!-- 비디오 디테일  -->
       <!-- flex 잡을때 참고 왼쪽 -->
       <div>
         <!-- 선택한 비디오 영상 -->
-        <div style="position:relative; padding-bottom:56.25%; padding-top:30px; height:0; overflow:hidden;">
-          <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" width="100%" height="315" :src="`https://www.youtube.com/embed/${video.id }`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div id="video-container">          
+          <div id="area">
+            <iframe id="video" :src="`https://www.youtube.com/embed/${video.id }`" />
+          </div>
         </div>
         <div>
           <!-- 제목 -->
-          <h1>{{video.title}}</h1>
+          <h2 id="video-title">{{video.title}}</h2>
           <!-- 조회수 -->
-          <span>{{video.viewCnt}}회</span>
+          <span id="view-cnt"><i class="bi bi-eye"></i>{{video.viewCnt}}</span>
           <!-- 찜 버튼 -->
           <span>
-            <button v-if="!isLikeVideo" @click="insertLikeVideo">찜</button>
-            <button v-else @click="deleteLikeVideo">찜 취소</button>
+            <button class="btn btn-outline-danger" v-if="!isLikeVideo" @click="insertLikeVideo"><i class="bi bi-heart"></i></button>
+            <button class="btn btn-outline-danger" v-else @click="deleteLikeVideo"><i class="bi bi-heart-fill"></i></button>
           </span>
         </div>
         <!-- 댓글  -->
         <div>
           <!-- 댓글 작성 창 -->
-          <div>
-            댓글: <input type="text" v-model="content" @keyup.enter="insertReview" placeholder="댓글 추가...">
-            <button @click="insertReview">댓글</button>
+          <div v-if="user.nickname.length">
+            {{ user.nickname }} <input type="text" v-model="content" @keyup.enter="insertReview" placeholder="댓글 추가...">
+            <button class="btn btn-outline-dark" @click="insertReview"><i class="bi bi-chat-dots"></i></button>
+          </div>
+          <div v-else>
+            댓글을 추가하려면 로그인하세요
           </div>
           <table>
             <thead>
@@ -42,16 +47,16 @@
                 <td v-if="writeNo == review.no"><input type="text" v-model="updateContent"></td>
                 <td v-else>{{review.content}}</td>
                 <td>{{review.regTime}}</td>
-                <td><button @click="upLike(review)">좋아요</button>{{review.likeCnt}}</td>
-                <td><button @click="upDislike(review)">싫어요</button>{{review.dislikeCnt}}</td>
+                <td><button class="btn btn-light" @click="upLike(review)"><i class="bi bi-hand-thumbs-up"></i></button>{{review.likeCnt}}</td>
+                <td><button class="btn btn-light" @click="upDislike(review)"><i class="bi bi-hand-thumbs-down"></i></button>{{review.dislikeCnt}}</td>
                 <td v-if="user.id == review.userId">
                   <div v-if="writeNo == review.no">
-                    <button @click="updateReview(review)">수정</button>
-                    <button  @click="cancleUpdate">취소</button>
+                    <button class="btn btn-primary" @click="updateReview(review)">수정</button>
+                    <button class="btn btn-secondary" @click="cancleUpdate">취소</button>
                   </div>
                   <div v-else>
-                    <button @click="changeToUpdateForm(review.no, review.content)">수정</button>
-                    <button @click="deleteReview(review)">삭제</button>
+                    <button class="btn btn-primary" @click="changeToUpdateForm(review.no, review.content)">수정</button>
+                    <button class="btn btn-danger" @click="deleteReview(review)">삭제</button>
                   </div>
                 </td>              
               </tr>
@@ -62,28 +67,31 @@
       <!-- flex 잡을때 참고 오른쪽 -->
       <!-- 추천영상 -->
       <div>
-        <router-link v-for="v in videos" :key="v.id"
-                     :to="`detail/${v.id}`" >
-            <b-card            
-            width="320"
-            height="180"
-            :title="`${v.title}`"
-            :img-src="`https://img.youtube.com/vi/${v.id}/mqdefault.jpg`"
-            img-alt="Image"
-            img-top
-            tag="article"
-            style="max-width: 20rem;"
-            class="mb-2"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            >
-            <b-card-text>
-            {{v.channelName}}
-            {{v.part}}
-            {{v.viewCnt}}
-            </b-card-text>
-            </b-card>               
-        </router-link>
+        <div v-for="v in videos" :key="v.id" class="card" style="width: 18rem;"> 
+          <router-link :to="{name: 'VideoDetail', params: {videoId: v.id}}">       
+            <img 
+              width="320"
+              height="180"
+              :src="`https://img.youtube.com/vi/${v.id}/mqdefault.jpg`"
+              alt="Image"
+              img-top
+              tag="article"
+              style="max-width: 17.5rem;"
+              class="mb-2"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>   
+          </router-link>       
+          <div class="card-body">  
+            <router-link :to="{name: 'VideoDetail', params: {videoId: v.id}}">           
+              <h5 class="card-title">{{v.title}}</h5> 
+            </router-link>           
+            <p class="card-text">
+              {{v.channelName}}
+              {{v.part}}
+              {{v.viewCnt}}
+            </p>            
+          </div>
+        </div>
       </div>
   </div>
 </template>
@@ -165,8 +173,9 @@ export default {
     }
   },
   created(){
-    const pathName = new URL(document.location).pathname.split("/");
-    const videoId = pathName[pathName.length-1]
+    // const pathName = new URL(document.location).pathname.split("/");
+    // const videoId = pathName[pathName.length-1]    
+    const videoId = this.$route.params.videoId
     this.$store.dispatch('getVideoById', videoId)
     this.$store.dispatch('getReviewByVideoId', videoId)    
   },
@@ -174,5 +183,28 @@ export default {
 </script>
 
 <style>
+#area {
+  position: relative; /* absolute는 부모가 relative일 때 부모를 따라간다. */
+  width: 100%;  
+  padding-bottom: 56.25%; /* 16:9 비율 */
+}
 
+#video {
+  position: absolute;
+  width: 100%; /* 부모에 맞게 꽉 채운다. */
+  height: 100%;
+}
+
+#video-container {
+  width: 80%;
+}
+
+#video-title {
+  width: 40em;
+  word-break: break-all;
+}
+
+#view-cnt {
+  font-size: 1.3rem;
+}
 </style>

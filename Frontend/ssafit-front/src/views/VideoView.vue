@@ -1,15 +1,15 @@
 <template>
   <div>
-   <div class="search">
-    <input type="text" v-model="keyword" @keyup.enter="search" placeholder="제목을 입력하세요">
-    <!-- <router-link :to="{name: 'VideoSearch', params : {keyword}}"><button>검색</button></router-link> -->
-    <!-- <router-link :to="`search?keyword=${keyword}`" ><button @click="search">검색</button></router-link> -->
-    <button @click="search">검색</button>
+   <div class="search">   
+    <div class="input-group mb-3 d-flex justify-content-center">
+      <input type="text" class="form-control" v-model="keyword" @keyup.enter="search" placeholder="제목을 입력하세요" aria-label="검색어" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary search-btn" type="button" id="button-addon2" @click="search" style="margin: 0;"><i class="bi bi-search"></i></button>
+    </div>     
    </div>
    <div>
-      <h2>운동 영상 목록</h2>
+      <!-- <h2>운동 영상 목록</h2> -->
 
-      <router-view />
+      <router-view :key="$route.fullPath"/>
   </div>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
 }
 
 input {
-  width: 200%;
+  width: 200%;  
   border: 1px solid #bbb;
   border-radius: 8px;
   text-align: center; 
@@ -45,4 +45,7 @@ input {
   font-size: 14px;
 }
 
+/* .container {
+ text-align: center;
+} */
 </style>

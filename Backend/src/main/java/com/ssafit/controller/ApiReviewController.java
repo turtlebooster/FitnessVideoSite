@@ -36,7 +36,7 @@ public class ApiReviewController {
 		return new ResponseEntity<List<Review>>(reviewService.getReviewListByUserId(userId),  HttpStatus.OK);
 	}
 	@PostMapping("/write")
-	public ResponseEntity<String> write(Review review){
+	public ResponseEntity<String> write(@RequestBody Review review){
 		reviewService.writeReview(review); 
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
 	}

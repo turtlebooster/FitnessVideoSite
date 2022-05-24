@@ -33,12 +33,14 @@ public class ApiUserController{
 	private JWTUtil jwtUtil;
 	
 	@PostMapping("/join")
-	public void join(User user){
+	public ResponseEntity<String> join(@RequestBody User user){
 		 try {
 			userService.join(user);
 		} catch (Exception e) {
-			e.printStackTrace();			
+			e.printStackTrace();	
+			return new ResponseEntity<String>(FAIL,HttpStatus.NOT_ACCEPTABLE);
 		}
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/login")

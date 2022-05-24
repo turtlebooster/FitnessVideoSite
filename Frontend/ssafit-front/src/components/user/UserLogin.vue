@@ -40,13 +40,13 @@ export default {
         }
     },
     methods:{
-        login(){
+        login(){            
             this.$store.dispatch('userLogin', {                
                 user: this.user, 
-                call: this.$route.query.call,
+                // call: document.referrer,
             });       
         }
-    }
+    },
 }
 </script>
 

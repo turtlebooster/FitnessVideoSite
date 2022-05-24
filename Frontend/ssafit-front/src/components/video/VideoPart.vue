@@ -9,7 +9,7 @@
       <button class="btn btn-outline-dark" @click = "getPartVideo('0004')" >복부</button>
     </div>
     <!-- 비디오 목록 -->
-    <div class="d-flex flex-wrap justify-content-center">  
+    <div class="container d-flex flex-wrap justify-content-center">  
       <div v-for="video in videos" :key="video.id" class="card" style="width: 18rem;">
         <router-link :to="`detail/${video.id}`" >
         <img width="320"

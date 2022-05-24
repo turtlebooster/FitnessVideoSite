@@ -22,7 +22,7 @@
 import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
-    ...mapState(["isLogin"])
+    ...mapState(["isLogin"]),
   },
   methods: {
     ...mapMutations(["USER_LOGOUT"]),

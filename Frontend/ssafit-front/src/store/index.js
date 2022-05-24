@@ -105,9 +105,14 @@ export default new Vuex.Store({
         params: user
       }).then(({data}) => {
         commit('USER_LOGIN', data)
-        if (call) {
-          router.push(call)
+        router.go(-1)
+        call
+      }).catch(() => {
+        if (confirm("아이디 또는 비밀번호가 잘못되었습니다.\n다시 로그인 하시겠습니까?")){
+          // console.dir(from);
+          router.push({name: 'UserLogin'})
         } else {
+          // no 눌렀을때 메인으로 돌아가기
           router.push('/')
         }
       })
@@ -117,9 +122,11 @@ export default new Vuex.Store({
       api({
         url: `/user/join`,
         method: 'POST',
-        params: user
+        data: JSON.stringify(user)
       }).then(() => {
         router.push('/')
+      }).catch(() => {
+        confirm("중복된 아이디 입니다.")        
       })
     },
     getLikeVideo({ commit }, user) {      
@@ -205,7 +212,7 @@ export default new Vuex.Store({
       api({
         url: `/review/write`,
         method: 'POST',
-        params: review,
+        data: JSON.stringify(review),
       })
       .then(()=>{
         // console.log(data)

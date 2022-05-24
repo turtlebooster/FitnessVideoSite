@@ -1,0 +1,38 @@
+select * from video;
+select * from user;
+select * from part;
+select * from like_video;
+select * from review;
+
+select review.*, user.nickname
+  from review, user
+ where review.user_id = user.id
+   and video_id = '54tTYO-vU2E';
+
+insert into like_video(video_id, user_id)
+values('54tTYO-vU2E', 'abc'),
+	  ('7TLk7pscICk', 'abc'),
+	  ('gMaB-fG4u4g', 'abc'),
+	  ('PjGcOP-TQPE', 'abc'),
+	  ('QqqZH3j_vH0', 'abc'),
+	  ('swRNeYw1JkY', 'abc');
+
+insert into review(user_id, reg_time, video_id, like_cnt, dislike_cnt, content)
+values('abc', now(), '54tTYO-vU2E', 0, 0, '댓글이당'),
+	  ('abc', now(), '54tTYO-vU2E', 0, 0, '댓글이당2'),
+      ('abc', now(), '54tTYO-vU2E', 0, 0, '댓글이당3');
+      
+select video.id, title, name as part, channel_name as channelName, url, view_cnt as viewCnt
+from video, part
+where video.part_id = part.id
+  and title like '%다이어트%'	;
+
+insert into follow(user_id, follow_id)
+values('abc', 'ssafy'),
+	  ('abc', '익명');
+      
+select * from follow;
+
+insert into follow(user_id, follow_id)
+values('ssafy', 'abc'),
+	  ('익명', 'abc');

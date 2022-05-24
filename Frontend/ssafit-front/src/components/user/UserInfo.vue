@@ -1,5 +1,6 @@
 <template>
   <div>
+    <br>
     <h2 class="fw-bold">유저 INFO</h2>
       <div class="modal-dialog" role="document">
         <div class="modal-content rounded-4 shadow">

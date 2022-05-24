@@ -1,9 +1,10 @@
 <template>
-  <div class = "d-flex ">
+  <div class = "container d-flex justify-content-around">
       <!-- 비디오 디테일  -->
       <!-- flex 잡을때 참고 왼쪽 -->
       <div>
         <!-- 선택한 비디오 영상 -->
+        <br>
         <div class="d-flex justify-content-center">
           <div id="video-container" >          
             <div id="area">
@@ -15,63 +16,75 @@
         <div id="video-bottom">
           <div >
             <!-- 제목 -->
-            <h2 id="video-title">{{video.title}}</h2>
-            <!-- 조회수 -->
-            <span id="view-cnt"><i class="bi bi-eye"></i>{{video.viewCnt}}</span>
-            <!-- 찜 버튼 -->
-            <span>
-              <button class="btn btn-outline-danger" v-if="!isLikeVideo" @click="insertLikeVideo"><i class="bi bi-heart"></i></button>
-              <button class="btn btn-outline-danger" v-else @click="deleteLikeVideo"><i class="bi bi-heart-fill"></i></button>
-            </span>
+            <h2 class="fw-bold" id="video-title">{{video.title}}</h2>
+            <div id="viewCntandLike">
+              <!-- 조회수 -->
+              <span id="view-cnt"><i class="bi bi-eye"></i>{{video.viewCnt}} </span>
+              <!-- 찜 버튼 -->
+              <span v-if="user.nickname.length">
+                <button class="btn btn-outline-danger" v-if="!isLikeVideo" @click="insertLikeVideo"> <i class="bi bi-heart"></i></button>
+                <button class="btn btn-outline-danger" v-else @click="deleteLikeVideo"> <i class="bi bi-heart-fill"></i></button>
+              </span>
+            </div>
           </div>
           <!-- 댓글  -->
           <div id="comment">
             <!-- 댓글 작성 창 -->
             <div v-if="user.nickname.length">
-              {{ user.nickname }} <input type="text" v-model="content" @keyup.enter="insertReview" placeholder="댓글 추가...">
+              <span class="fw-bold"> {{ user.nickname }} </span>
+              <input type="text" v-model="content" @keyup.enter="insertReview" placeholder="댓글 추가...">
               <button class="btn btn-outline-dark" @click="insertReview"><i class="bi bi-chat-dots"></i></button>
             </div>
-            <div v-else>
-              댓글을 추가하려면 로그인하세요
+            <div v-else class="fw-bold">
+              댓글을 추가하려면 로그인하세요.
+            </div >
+            <div v-if="reviews.length" class="d-flex">
+              <table class="flex-fill">
+                <thead>
+                  <tr>
+                    <th id="nickname-col">닉네임</th>
+                    <th id="content-col">내용</th>
+                    <th id="regtime-col">작성시간</th>
+                    <th id="like-col">좋아요</th>
+                    <th id="dislike-col">싫어요</th>
+                    <th id="btn-col">수정/삭제</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="review in reviews" :key="review.no">
+                    <td><router-link :to="{name : 'MemberLikeVideo', params: {memberId : review.userId}}" class="nicname-col">{{review.nickname}}</router-link></td>
+                    <td v-if="writeNo == review.no"><input type="text" v-model="updateContent" @keyup.enter="updateReview(review)"></td>
+                    <td v-else class="content-col">{{review.content}}</td>
+                    <td>{{review.regTime}}</td>
+                    <td><button class="btn btn-light" @click="upLike(review)"><i class="bi bi-hand-thumbs-up"></i></button>{{review.likeCnt}}</td>
+                    <td><button class="btn btn-light" @click="upDislike(review)"><i class="bi bi-hand-thumbs-down"></i></button>{{review.dislikeCnt}}</td>
+                    <td v-if="user.id == review.userId">
+                      <div v-if="writeNo == review.no">
+                        <button class="btn btn-primary" @click="updateReview(review)">수정</button>
+                        <button class="btn btn-secondary" @click="cancleUpdate">취소</button>
+                      </div>
+                      <div v-else>
+                        <button class="btn btn-primary" @click="changeToUpdateForm(review.no, review.content)">수정</button>
+                        <button class="btn btn-danger" @click="deleteReview(review)">삭제</button>
+                      </div>
+                    </td>              
+                  </tr>
+                </tbody>
+              </table>
+            </div>        
+            <div v-else >
+              작성된 댓글이 없습니다.              
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>닉네임</th>
-                  <th>내용</th>
-                  <th>작성시간</th>
-                  <th>좋아요</th>
-                  <th>싫어요</th>
-                  <th>수정/삭제</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="review in reviews" :key="review.no">
-                  <router-link :to="{name : 'MemberLikeVideo', params: {memberId : review.userId}}"><td>{{review.nickname}}</td></router-link>
-                  <td v-if="writeNo == review.no"><input type="text" v-model="updateContent"></td>
-                  <td v-else>{{review.content}}</td>
-                  <td>{{review.regTime}}</td>
-                  <td><button class="btn btn-light" @click="upLike(review)"><i class="bi bi-hand-thumbs-up"></i></button>{{review.likeCnt}}</td>
-                  <td><button class="btn btn-light" @click="upDislike(review)"><i class="bi bi-hand-thumbs-down"></i></button>{{review.dislikeCnt}}</td>
-                  <td v-if="user.id == review.userId">
-                    <div v-if="writeNo == review.no">
-                      <button class="btn btn-primary" @click="updateReview(review)">수정</button>
-                      <button class="btn btn-secondary" @click="cancleUpdate">취소</button>
-                    </div>
-                    <div v-else>
-                      <button class="btn btn-primary" @click="changeToUpdateForm(review.no, review.content)">수정</button>
-                      <button class="btn btn-danger" @click="deleteReview(review)">삭제</button>
-                    </div>
-                  </td>              
-                </tr>
-              </tbody>
-            </table>
+            <br>
           </div>      
         </div>
       </div>     
       <!-- flex 잡을때 참고 오른쪽 -->
       <!-- 추천영상 -->
       <div>
+        <br>
+        <h2 class="fw-bold">추천영상</h2>
+        <br>
         <div v-for="v in videos" :key="v.id" class="card" style="width: 18rem;"> 
           <router-link :to="{name: 'VideoDetail', params: {videoId: v.id}}">       
             <img 
@@ -90,11 +103,15 @@
             <router-link :to="{name: 'VideoDetail', params: {videoId: v.id}}">           
               <h5 class="card-title">{{v.title}}</h5> 
             </router-link>           
-            <p class="card-text">
-              {{v.channelName}}
-              {{v.part}}
-              {{v.viewCnt}}
-            </p>            
+            <div class="card-text">
+              <div class="d-flex justify-content-between">
+                <span>{{v.channelName}}</span>
+                <span class="viewCnt"><i class="bi bi-eye"></i> {{v.viewCnt}}회</span>          
+              </div>                                                
+              <div>
+                #{{v.part}}
+              </div> 
+            </div>            
           </div>
         </div>
       </div>
@@ -187,7 +204,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+a {
+  text-decoration: none;
+  color: black;
+}
+
 #area {
   position: relative; /* absolute는 부모가 relative일 때 부모를 따라간다. */
   width: 100%;  
@@ -201,12 +223,16 @@ export default {
 }
 
 #video-container {
-  width: 80%;
+  /* width: 100%; */
+  width: 970px;
+  height: 545px;
 }
 
 #video-title {
-  width: 40em;
+  /* width: 40em; */
+  text-align: start;
   word-break: break-all;
+  
 }
 
 #view-cnt {
@@ -214,11 +240,44 @@ export default {
 }
 
 #video-bottom {
+  /* text-align: center; */
+}
+
+#viewCntandLike {
+  text-align: end;
+  /* margin-right: 3%; */
+}
+
+#content-col {
+  /* width: 40%; */
   text-align: center;
 }
 
+#like-col,
+#dislike-col {
+  width: 8%;
+  text-align: center;
+}
+
+#nickname-col {
+  width: 10%;
+  text-align: center;
+}
+
+#btn-col,
+#regtime-col {
+  width: 19%;
+  text-align: center;
+}
+
+.nicname-col {
+  color: black;
+  text-decoration: none; 
+  font-weight: 700;
+}
+
 input {
-  width: 200%;  
+  width: 85%;  
   border: 1px solid #bbb;
   border-radius: 8px;
   text-align: center; 
@@ -227,7 +286,8 @@ input {
 }
 
 table {
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
+  text-align: center;
 }
 </style>

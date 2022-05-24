@@ -28,9 +28,9 @@ export default {
   methods: {
     search() {
       this.$store.dispatch("getSearchVideo", this.keyword)
-      this.$router.push({name: 'VideoSearch', params: {keyword : this.keyword}})
+      this.$router.push({name: 'VideoSearch', params: {keyword : this.keyword}})      
     },
-  }
+  },
 }
 </script>
 

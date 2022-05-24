@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div class="container">
+    <br>
     <h2 class="fw-bold">
       찜 영상 목록
     </h2>
-    <div class="d-flex flex-wrap justify-content-center">
+    <div class="d-flex flex-wrap ">
       <div v-for="video in user.likeVideos" :key="video.id" class="card" style="width: 18rem;">
         <router-link :to="`detail/${video.id}`" >
         <img width="320"
@@ -21,12 +22,15 @@
           <router-link :to="`/detail/${video.id}`" >
             <h5 class="card-title">{{video.title}}</h5>
           </router-link>
-          <p class="card-text">
-            {{video.channelName}}
-            {{video.part}}
-            {{video.viewCnt}}
-            <b-button @click="deleteLikeVideo(video.id)" variant="danger">삭제</b-button>
-          </p>            
+          <div class="card-text">
+            <div class="d-flex justify-content-between">
+              <span>{{video.channelName}}</span>
+              <span class="viewCnt"><i class="bi bi-eye"></i> {{video.viewCnt}}회</span>          
+            </div>                                                
+            <div>
+              #{{video.part}}
+            </div> 
+          </div>             
         </div>
       </div>
     </div>
@@ -58,5 +62,12 @@ export default {
 <style scoped>
 h2 {
   text-align: center;
+}
+
+.card {
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;  
 }
 </style>

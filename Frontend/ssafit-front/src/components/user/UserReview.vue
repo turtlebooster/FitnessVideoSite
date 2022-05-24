@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <div class="container">
+    <br>
     <h2 class="fw-bold">리뷰 목록</h2>
     <table v-if="user.reviews.length">
       <thead>
         <tr>
-          <th>영상 썸네일</th>
-          <th>제목</th>
-          <th>리뷰 내용</th>
+          <th id="thumnail-col">영상 썸네일</th>
+          <th id="title-col">제목</th>
+          <th id="review-col">리뷰 내용</th>
         </tr>
       </thead>
       <tbody>
@@ -61,5 +62,13 @@ h2 {
 }
 .center {
   text-align: center;
+}
+#thumnail-col {
+  width: 15%;
+}
+
+#review-col,
+#title-col {
+  width: 40%;
 }
 </style>

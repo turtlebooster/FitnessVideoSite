@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2 class="fw-bold">
       찜 영상 목록
     </h2>
@@ -21,11 +21,15 @@
           <router-link :to="`/detail/${video.id}`" >
             <h5 class="card-title">{{video.title}}</h5>
           </router-link>
-          <p class="card-text">
-            {{video.channelName}}
-            {{video.part}}
-            {{video.viewCnt}}
-          </p>            
+          <div class="card-text">
+            <div class="d-flex justify-content-between">
+              <span>{{video.channelName}}</span>
+              <span class="viewCnt"><i class="bi bi-eye"></i> {{video.viewCnt}}회</span>          
+            </div>                                                
+            <div>
+              #{{video.part}}
+            </div> 
+          </div>          
         </div>
       </div>
         <!--  -->
@@ -51,5 +55,8 @@ export default {
 </script>
 
 <style>
-
+a {
+  text-decoration: none;
+  color: black;
+}
 </style>

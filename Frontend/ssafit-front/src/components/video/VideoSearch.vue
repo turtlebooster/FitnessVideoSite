@@ -1,7 +1,8 @@
 <template>
   <div>
+    <!-- <h2 class="fw-bold">'{{keyword}}' 검색결과</h2> -->
     <!-- 비디오 목록 -->
-    <div class="d-flex flex-wrap justify-content-center">  
+    <div class="container d-flex flex-wrap">  
       <div v-for="video in videos" :key="video.id" class="card" style="width: 18rem;">
         <router-link :to="`detail/${video.id}`" >
         <img width="320"
@@ -19,39 +20,18 @@
           <router-link :to="`detail/${video.id}`" >
             <h5 class="card-title">{{video.title}}</h5>
           </router-link>
-          <p class="card-text">
-            {{video.channelName}}
-            {{video.part}}
-            {{video.viewCnt}}
-          </p>            
+          <div class="card-text">
+           <div class="d-flex justify-content-between">
+              <span>{{video.channelName}}</span>
+              <span class="viewCnt"><i class="bi bi-eye"></i> {{video.viewCnt}}회</span>          
+            </div>                                                
+            <div>
+              #{{video.part}}
+            </div>             
+          </div>            
         </div>
       </div>  
     </div>
-
-
-    <!-- <div>
-        <b-card
-        v-for="video in videos"
-        :key="video.id"
-        width="320"
-        height="180"
-        :title="`${video.title}`"
-        :img-src="`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`"
-        img-alt="Image"
-        img-top
-        tag="article"
-        style="max-width: 20rem;"
-        class="mb-2"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        >
-        <b-card-text>
-        {{video.channelName}}
-        {{video.part}}
-        {{video.viewCnt}}
-        </b-card-text>
-        </b-card>               
-    </div>    -->
   </div>
 </template>
 
@@ -62,11 +42,6 @@ export default {
   computed:{
     ...mapState(['videos']),
   },
-  created() {
-    // let keyword = new URL(document.location).searchParams.get("keyword");
-    let keyword = this.$route.paras.keyword;
-    this.$store.dispatch("getSearchVideo", keyword)    
-  }
 }
 </script>
 
@@ -76,5 +51,9 @@ export default {
   margin-left: 10px;
   margin-top: 10px;
   margin-bottom: 10px;  
+}
+a {
+  text-decoration: none;
+  color: black;
 }
 </style>

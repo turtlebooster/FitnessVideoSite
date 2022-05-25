@@ -10,7 +10,7 @@ public interface TodoListService {
 	// 하나 불러오기
 	TodoList getTodoListOne(int no);
 	// todo 만들기
-	void writeTodoList(TodoList todoList);
+	List<TodoList> writeTodoList(TodoList todoList);	
 	// todo 수정
 	// 내용 수정
 	void modifyTodoList(TodoList todoList);

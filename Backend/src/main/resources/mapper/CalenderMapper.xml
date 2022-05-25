@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafit.model.dao.CalanderDao">
-	<resultMap type="calander" id="calanderMap">
+<mapper namespace="com.ssafit.model.dao.CalendarDao">
+	<resultMap type="Calendar" id="CalendarMap">
 		<id column="user_id" property="userId" />
 		<result column="todo_id" property="todoId" />
 		<result column="date" property="date" />
@@ -10,29 +10,29 @@
 		<result column="eat_calories" property="eatCalories" />
 		<result column="use_calories" property="useCalories" />
 	</resultMap>
-	<select id="selectCalanderListByUserId" resultMap="calanderMap" parameterType="string">
+	<select id="selectCalendarListByUserId" resultMap="CalendarMap" parameterType="string">
 		select *
-		from calander
+		from Calendar
 		where user_id = #{userId}
 	</select>
-	<select id="selectCalanderOne" resultMap="calanderMap">
+	<select id="selectCalendarOne" resultMap="CalendarMap">
 		select *
-		from calander
+		from Calendar
 		where (user_id, date) = (#{userId}, #{date})
 	</select>
-	<insert id="insertCalander" parameterType="calander">
-		insert into calander
+	<insert id="insertCalendar" parameterType="Calendar">
+		insert into Calendar
 		values(#{userId}, 0, #{date}, #{dayOfWeek}, #{eatCalories}, #{useCalories})
 		
 	</insert>
-	<update id="updateCalander" parameterType="calander">
-		update calander
+	<update id="updateCalendar" parameterType="Calendar">
+		update Calendar
 		   set eat_calories = #{eatCalories},
 		   	   use_calories = #{useCalories}
 		 where (user_id, date) = (#{userId}, #{date})
 	</update>
-	<delete id="deleteCalander">
-		delete from calander
+	<delete id="deleteCalendar">
+		delete from Calendar
 		 where (user_id, date) = (#{userId}, #{date})
 	</delete>
 </mapper>

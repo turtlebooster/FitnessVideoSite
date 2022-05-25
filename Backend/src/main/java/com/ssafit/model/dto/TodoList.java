@@ -31,7 +31,11 @@ public class TodoList {
 	public void setTodo(String todo) {
 		this.todo = todo;
 	}
-
+	@Override
+	public String toString() {
+		return "TodoList [no=" + no + ", id=" + id + ", todo=" + todo + ", check=" + check + "]";
+	}
+	
 }
 /*
 no int AI PK 

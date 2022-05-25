@@ -2,7 +2,7 @@ package com.ssafit.model.dto;
 
 import lombok.Data;
 
-public class Calander {
+public class Calendar {
 	private String userId;
 	private int todoId;
 	private String date;

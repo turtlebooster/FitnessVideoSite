@@ -40,13 +40,13 @@ public class ApiTodoListController {
 	}
 	
 	@PostMapping("/write")
-	public ResponseEntity<String> write(TodoList todoList){
-		todoListService.writeTodoList(todoList); 
-		return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
+	public ResponseEntity<List<TodoList>> write(@RequestBody TodoList todoList){
+		return new ResponseEntity<List<TodoList>>(todoListService.writeTodoList(todoList), HttpStatus.OK);
 	}
 	
 	@PutMapping("/update")
 	public ResponseEntity<String> update(@RequestBody TodoList todoList){
+		System.out.println(todoList.toString());
 		todoListService.modifyTodoList(todoList);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
 	}	

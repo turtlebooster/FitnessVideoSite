@@ -25,14 +25,16 @@ public class TodoListServiceImpl implements TodoListService{
 	}
 
 	@Override
-	public void writeTodoList(TodoList todoList) {
-		todoListDao.insertTodoList(todoList);
+	public List<TodoList> writeTodoList(TodoList todoList) {
+		todoListDao.insertTodoList(todoList);			
+		return todoListDao.selectTodoListList(todoList.getId());		
 	}
 
 	@Override
 	public void modifyTodoList(TodoList todoList) {
 		TodoList origin = todoListDao.selectTodoListOne(todoList.getNo());
 		origin.setTodo(todoList.getTodo());
+		origin.setCheck(todoList.isCheck());
 		todoListDao.updateTodoList(origin);		
 	}
 

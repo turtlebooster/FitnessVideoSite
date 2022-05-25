@@ -19,6 +19,8 @@ export default new Vuex.Store({
       reviews: [],
       followList: [],
       followerList: [],
+      calendar: null,
+      todoLists: [],
     },
     member: {
       id: "",
@@ -96,6 +98,16 @@ export default new Vuex.Store({
     GET_MEMBER_FOLLOWER_LIST(state, followerList) {
       state.member.followerList = followerList
     },
+    // 캘린더 관련
+    GET_CALENDAR(state, calendar) {
+      state.user.calendar = calendar
+    },
+    GET_TODOLISTS(state, todoLists) {
+      state.user.todoLists = todoLists
+    },
+    CLEAR_TODOLISTS(state) {
+      state.user.todoLists = []
+    }
   },
   actions: {
     userLogin({ commit }, {user, call}) {
@@ -368,6 +380,80 @@ export default new Vuex.Store({
         commit('GET_MEMBER_FOLLOWER_LIST', data)
       })
     },
+    getCalendar({ commit }, data) {      
+      api({
+        url: `/Calendar/getone/${data.userId}/${data.date}`,
+        method: 'GET',        
+      }).then(({data}) => {
+        // console.log("정상접근")
+        commit('GET_CALENDAR', data)
+        api({
+          url: `/todo/list/${data.todoId}`,
+          method: 'GET', 
+        }).then(({data}) => {
+          commit('GET_TODOLISTS', data)
+        }).catch(() => {
+          // console.log("오류발생")
+          commit('CLEAR_TODOLISTS')
+        })
+      }).catch(() => {
+        // console.log("오류발생")
+        commit('CLEAR_TODOLISTS')
+      })
+    },
+    insertTodo({ commit }, params) {
+      if (params.todoList.id) {
+        api({
+          url: `/todo/write`,
+          method: 'POST',
+          data: JSON.stringify(params.todoList),
+        }).then(({data}) => {
+          commit('GET_TODOLISTS', data)
+        })
+      } else {
+        const Calendar = {
+          userId: params.userId,
+          date: params.date,
+          dayOfWeek: params.dayOfWeek,
+        }
+        api({
+          url: `/Calendar/write`,
+          method: 'POST',
+          data: JSON.stringify(Calendar),
+        }).then(() => {
+          api({
+            url: `/Calendar/getone/${params.userId}/${params.date}`,
+            method: 'GET',
+          }).then(({data}) => {
+            commit('GET_CALENDAR', data)            
+            params.todoList.id = data.todoId
+            api({
+              url: `/todo/write`,
+              method: 'POST',
+              data: JSON.stringify(params.todoList),
+            }).then(({data}) => {
+              commit('GET_TODOLISTS', data)
+            })
+          })
+        }).catch(() => {
+          console.log("then으로 못들어가!")
+        })
+      }     
+    },
+    updateTodo({ commit }, todoList) {
+      api({
+        url: `/todo/update`,
+        method: 'PUT',
+        data: JSON.stringify(todoList),
+      }).then(() => {
+        api({
+          url: `/todo/list/${todoList.id}`,
+          method: 'GET',          
+        }).then(({data}) => {
+          commit('GET_TODOLISTS', data)
+        })
+      })
+    }
   },  
   modules: {
   }

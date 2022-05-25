@@ -12,7 +12,7 @@
 		from todo_list
 		where no = #{no}
 	</select>
-	<insert id="insertTodoList" parameterType="todoList">
+	<insert id="insertTodoList" parameterType="todoList" >
 		insert into todo_list
 		values(0, #{id}, #{todo}, #{check})
 	</insert>

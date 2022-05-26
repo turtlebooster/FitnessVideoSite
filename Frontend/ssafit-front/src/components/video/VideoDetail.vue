@@ -2,7 +2,7 @@
   <div class = "container d-flex justify-content-around">
       <!-- 비디오 디테일  -->
       <!-- flex 잡을때 참고 왼쪽 -->
-      <div>
+      <div class="left-box">
         <!-- 선택한 비디오 영상 -->
         <br>
         <div class="d-flex justify-content-center">
@@ -67,7 +67,8 @@
                         <button class="btn btn-primary" @click="changeToUpdateForm(review.no, review.content)">수정</button>
                         <button class="btn btn-danger" @click="deleteReview(review)">삭제</button>
                       </div>
-                    </td>              
+                    </td>   
+                    <td v-else> </td>           
                   </tr>
                 </tbody>
               </table>
@@ -81,15 +82,15 @@
       </div>     
       <!-- flex 잡을때 참고 오른쪽 -->
       <!-- 추천영상 -->
-      <div>
+      <div class="right-box">
         <br>
         <h2 class="fw-bold">추천영상</h2>
         <br>
-        <div v-for="v in videos" :key="v.id" class="card" style="width: 18rem;"> 
+        <div v-for="v in videos" :key="v.id" class="card" style="width: 288px;"> 
           <router-link :to="{name: 'VideoDetail', params: {videoId: v.id}}">       
             <img 
-              width="320"
-              height="180"
+              width="288"
+              height="162"
               :src="`https://img.youtube.com/vi/${v.id}/mqdefault.jpg`"
               alt="Image"
               img-top
@@ -120,6 +121,13 @@
 
 <script>
 import {mapState} from 'vuex'
+
+function rightBoxResize() {
+    let videoContainer = document.getElementsById('video-container');
+    let videoBottom = document.getElementsByClassName('video-bottom');
+    let rightBox = document.getElementsByClassName('right-box');
+    rightBox.style.height = videoContainer.style.height + videoBottom;
+}
 
 export default {
   name: "VideoDetail",
@@ -192,7 +200,7 @@ export default {
         }
       }
       return false
-    }
+    },    
   },
   created(){
     // const pathName = new URL(document.location).pathname.split("/");
@@ -200,6 +208,7 @@ export default {
     const videoId = this.$route.params.videoId
     this.$store.dispatch('getVideoById', videoId)
     this.$store.dispatch('getReviewByVideoId', videoId)    
+    rightBoxResize()
   },
 }
 </script>
@@ -225,10 +234,11 @@ a {
 #video-container {
   /* width: 100%; */
   width: 970px;
-  height: 545px;
+  height: 545px;  
 }
 
 #video-title {
+  padding-top: 10px;
   /* width: 40em; */
   text-align: start;
   word-break: break-all;
@@ -237,10 +247,7 @@ a {
 
 #view-cnt {
   font-size: 1.3rem;
-}
-
-#video-bottom {
-  /* text-align: center; */
+  padding-right: 10px;
 }
 
 #viewCntandLike {
@@ -285,9 +292,41 @@ input {
   font-size: 14px;
 }
 
+.card {
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;  
+  max-width: 17.5rem;  
+}
+
+.card,
+.card img {
+  border-radius: 15px;
+}
+
+.card:hover {
+  background: rgba(56, 56, 56, 0.150);
+}
+
 table {
   /* margin-left: auto;
   margin-right: auto; */
   text-align: center;
+}
+
+tr:hover {
+  color: black;
+  background: rgba(56, 56, 56, 0.150);
+}
+
+.left-box {
+  margin-top: 10px;  
+  padding: 0 10px 0 10px;
+  border-right: 2px solid rgb(0, 0, 0);
+}
+
+.right-box {    
+  padding: 0 10px 0 10px;
 }
 </style>

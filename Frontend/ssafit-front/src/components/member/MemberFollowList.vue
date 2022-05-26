@@ -4,6 +4,7 @@
     <div class="d-flex justify-content-evenly">      
       <!-- 팔로우 목록 -->
       <div>
+        <br>
         <h2 class="fw-bold">팔로우 목록</h2>
         <table v-if="member.followList.length">
           <thead>
@@ -13,7 +14,7 @@
           </thead>
           <tbody>
             <tr v-for="(follow, index) in member.followList" :key="index">
-              <td>
+              <td style="width: 100px">
                 <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follow.id}}">
                   <img src="../../assets/profile/basic_profile.jpg" width="50px">
                   </router-link>
@@ -82,5 +83,16 @@ export default {
 table {
   margin-left: auto;
   margin-right: auto;
+  width: 300px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+tr:hover {
+  color: black;
+  background: rgba(56, 56, 56, 0.217);
 }
 </style>

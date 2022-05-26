@@ -69,5 +69,20 @@ h2 {
   margin-left: 10px;
   margin-top: 10px;
   margin-bottom: 10px;  
+  max-width: 17.5rem;  
+}
+
+.card,
+.card img {
+  border-radius: 15px;
+}
+
+.card:hover {
+  background: rgba(56, 56, 56, 0.150);
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }
 </style>

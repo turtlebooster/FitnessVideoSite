@@ -453,8 +453,32 @@ export default new Vuex.Store({
           commit('GET_TODOLISTS', data)
         })
       })
-    }
-  },  
-  modules: {
+    },
+  updateCalories({ commit }, Calendar){
+    console.log(Calendar)
+    api({
+      url: `/Calendar/updateCalories`,
+      method: 'PUT',
+      data: JSON.stringify(Calendar),
+    }).then(() => {
+      
+      commit('GET_CALENDAR', Calendar )
+    })
+  },
+  deleteTodo({ commit }, params){
+    api({
+      url: `/todo/delete/${params.todoList.no}`,
+      method: 'DELETE',
+    }).then(() => {
+      api({ 
+        url: `/todo/list/${params.todoList.id}`,
+        method: 'GET',
+      }).then(( {data} ) =>{
+        commit('GET_TODOLISTS', data)      
+      })  
+    })
   }
+}, 
+modules: {
+  },
 })

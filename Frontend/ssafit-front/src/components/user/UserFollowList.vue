@@ -14,12 +14,12 @@
           </thead>
           <tbody>
             <tr v-for="(follow, index) in user.followList" :key="index">
-              <td>
+              <td style="width: 100px;">
                 <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follow.id}}">
                   <img src="../../assets/profile/basic_profile.jpg" width="50px">
                   </router-link>
               </td>
-              <td style="text-align : left;">
+              <td style="text-align : left; width: 100px;">
                 <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follow.id}}" style=" margin-left: 10px;">{{ follow.nickname }}</router-link>         
               </td>               
               <td><button @click="deleteFollow(follow.id)" class="btn btn-danger" style=" margin-left: 10px;">삭제</button></td>
@@ -42,12 +42,12 @@
           </thead>
           <tbody>
             <tr v-for="(follower, index) in user.followerList" :key="index">
-              <td>
+              <td style="width: 100px;">
                 <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follower.id}}">
                   <img src="../../assets/profile/basic_profile.jpg" width="50px">
                   </router-link>
               </td>
-              <td style="text-align : left;">
+              <td style="text-align : left; ">
                 <router-link :to="{name : 'MemberLikeVideo', params: {memberId : follower.id}}" style=" margin-left: 10px;">{{ follower.nickname }}</router-link>         
               </td>             
             </tr>
@@ -87,6 +87,17 @@ export default {
 
 table {
   margin-left: auto;
-  margin-right: auto;
+  margin-right: auto;  
+  width: 300px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+tr:hover {
+  color: black;
+  background: rgba(56, 56, 56, 0.217);
 }
 </style>
